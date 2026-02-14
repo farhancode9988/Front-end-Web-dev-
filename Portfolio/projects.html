@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects - Farhan</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+<header>
+    <nav>
+        <div class="left"><a href="index.html">Farhan's Portfolio</a></div>
+        <div class="right">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="education.html">Education</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<main>
+<section class="project-section">
+    <h1 class="project-title">My GitHub Projects</h1>
+
+    <div class="project-controls">
+        <input type="text" id="search" placeholder="Search projects...">
+        <select id="filter">
+            <option value="all">All</option>
+        </select>
+        <select id="sort">
+            <option value="default">Sort: Default</option>
+            <option value="stars">Sort: Stars</option>
+        </select>
+    </div>
+
+    <div id="repos" class="project-grid"></div>
+</section>
+</main>
+
+<script>
+const repoContainer = document.getElementById("repos");
+const searchInput = document.getElementById("search");
+const filterSelect = document.getElementById("filter");
+const sortSelect = document.getElementById("sort");
+let allRepos = [];
+
+fetch("https://api.github.com/users/farhancode9988/repos")
+    .then(res => res.json())
+    .then(data => {
+        allRepos = data;
+        loadFilters(data);
+        displayRepos(data);
+    });
+
+// Populate language filter
+function loadFilters(repos) {
+    const langs = new Set(repos.map(r => r.language).filter(Boolean));
+    langs.forEach(lang => {
+        const opt = document.createElement("option");
+        opt.value = lang;
+        opt.textContent = lang;
+        filterSelect.appendChild(opt);
+    });
+}
+
+// Display repos as cards
+function displayRepos(repos) {
+    repoContainer.innerHTML = "";
+    repos.forEach(repo => {
+        const card = document.createElement("div");
+        card.className = "project-card";
+
+        // Determine live demo link if GitHub Pages exists
+        let liveLink = repo.homepage ? `<a href="${repo.homepage}" target="_blank" class="live-btn"><i class="fas fa-external-link-alt"></i> Live Demo</a>` : "";
+
+        // Tech icon (example: HTML, CSS, JS icons)
+        let techIcon = "";
+        switch(repo.language) {
+            case "HTML": techIcon = `<i class="fab fa-html5 tech-icon" title="HTML"></i>`; break;
+            case "CSS": techIcon = `<i class="fab fa-css3-alt tech-icon" title="CSS"></i>`; break;
+            case "JavaScript": techIcon = `<i class="fab fa-js-square tech-icon" title="JavaScript"></i>`; break;
+            case "Python": techIcon = `<i class="fab fa-python tech-icon" title="Python"></i>`; break;
+            default: techIcon = `<i class="fas fa-code tech-icon" title="${repo.language || 'General'}"></i>`;
+        }
+
+        // Card HTML
+        card.innerHTML = `
+            <div class="card-header">
+                <h3>${repo.name}</h3>
+                <span class="tag">${repo.language || "General"}</span>
+            </div>
+            <p>${repo.description || "No description available"}</p>
+            <div class="card-footer">
+                ${techIcon}
+                <a href="${repo.html_url}" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                ${liveLink}
+                <span class="stars"><i class="fas fa-star"></i> ${repo.stargazers_count}</span>
+            </div>
+        `;
+        repoContainer.appendChild(card);
+    });
+}
+
+// Apply filters + search + sort
+function applyFilters() {
+    const text = searchInput.value.toLowerCase();
+    const lang = filterSelect.value;
+    const sort = sortSelect.value;
+
+    let filtered = allRepos.filter(repo => {
+        const matchText = repo.name.toLowerCase().includes(text);
+        const matchLang = lang === "all" || repo.language === lang;
+        return matchText && matchLang;
+    });
+
+    if (sort === "stars") {
+        filtered.sort((a, b) => b.stargazers_count - a.stargazers_count);
+    }
+
+    displayRepos(filtered);
+}
+
+searchInput.addEventListener("input", applyFilters);
+filterSelect.addEventListener("change", applyFilters);
+sortSelect.addEventListener("change", applyFilters);
+</script>
+
+</body>
+</html>
