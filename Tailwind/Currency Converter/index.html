@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Currency Converter</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <style>
+    select option {
+      background-color: #1a2236;
+      color: white;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-[#0b0f1a] p-4">
+
+  <div class="bg-[#111827] border border-[#1e3a5f] rounded-2xl shadow-[0_0_40px_rgba(0,140,255,0.08)] p-8 w-full max-w-sm transition-transform duration-300 hover:-translate-y-1">
+
+    <!-- Header -->
+    <div class="flex items-center justify-center gap-2 mb-1">
+      <i class="fa-solid fa-coins text-blue-400 text-lg"></i>
+      <h2 class="text-xl font-bold text-white tracking-wide">Currency Converter</h2>
+    </div>
+    <p class="text-center text-[#4b6cb7] text-xs mb-7 tracking-widest uppercase">Live Exchange Rates</p>
+
+    <form>
+
+      <!-- Amount -->
+      <div class="mb-5">
+        <p class="text-xs text-[#4b6cb7] uppercase tracking-widest mb-1.5">Amount</p>
+        <input
+          type="number"
+          value="1"
+          class="w-full bg-[#0b0f1a] border border-[#1e3a5f] text-white rounded-xl px-4 h-12 text-base outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition placeholder-gray-600"
+        />
+      </div>
+
+      <!-- Dropdowns -->
+      <div class="flex items-center justify-between gap-3">
+
+        <!-- From -->
+        <div class="from flex-1">
+          <p class="text-xs text-[#4b6cb7] uppercase tracking-widest mb-1.5">From</p>
+          <div class="flex items-center gap-2 bg-[#0b0f1a] border border-[#1e3a5f] rounded-xl px-2 py-2 hover:border-blue-500 transition">
+            <img src="https://flagsapi.com/US/flat/64.png" class="w-7 h-7 rounded-full object-cover" />
+            <select name="from" class="text-sm text-white outline-none cursor-pointer flex-1 bg-transparent"></select>
+          </div>
+        </div>
+
+        <!-- Swap -->
+        <div class="swap mt-5 cursor-pointer bg-blue-600 hover:bg-blue-500 text-white w-9 h-9 flex items-center justify-center rounded-full transition-transform duration-300 hover:rotate-180 shadow-[0_0_12px_rgba(59,130,246,0.5)]">
+          <i class="fa-solid fa-arrow-right-arrow-left text-xs"></i>
+        </div>
+
+        <!-- To -->
+        <div class="to flex-1">
+          <p class="text-xs text-[#4b6cb7] uppercase tracking-widest mb-1.5">To</p>
+          <div class="flex items-center gap-2 bg-[#0b0f1a] border border-[#1e3a5f] rounded-xl px-2 py-2 hover:border-blue-500 transition">
+            <img src="https://flagsapi.com/PK/flat/64.png" class="w-7 h-7 rounded-full object-cover" />
+            <select name="to" class="text-sm text-white outline-none cursor-pointer flex-1 bg-transparent"></select>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Loader -->
+      <div class="loader hidden mx-auto mt-5 w-6 h-6 border-4 border-[#1e3a5f] border-t-blue-500 rounded-full animate-spin"></div>
+
+      <!-- Message -->
+      <div class="msg text-center font-semibold text-blue-300 my-6 text-sm tracking-wide"></div>
+
+      <!-- Button -->
+      <button class="w-full h-12 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-base font-semibold tracking-wide hover:-translate-y-0.5 hover:shadow-[0_4px_20px_rgba(59,130,246,0.4)] transition-all duration-300">
+        Get Exchange Rate
+      </button>
+
+    </form>
+
+    <p class="text-center text-[#1e3a5f] text-xs mt-6">Powered by open exchange API</p>
+  </div>
+
+  <script src="codes.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
